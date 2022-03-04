@@ -3,10 +3,12 @@ package service
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/DenrianWeiss/tracely/model"
-	"github.com/bcicen/jstream"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/DenrianWeiss/tracely/model"
+	"github.com/bcicen/jstream"
 )
 
 func GetTxResult(rpc, txid string) []model.TraceStep {
@@ -14,7 +16,10 @@ func GetTxResult(rpc, txid string) []model.TraceStep {
 	req := model.NewRequest(txid)
 	reqJson, _ := json.Marshal(req)
 	reqStream := bytes.NewReader(reqJson)
-	post, err := http.Post(rpc, "application/json", reqStream)
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
+	post, err := client.Post(rpc, "application/json", reqStream)
 	if err != nil {
 		return result
 	}
