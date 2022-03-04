@@ -15,7 +15,7 @@ func main() {
 			"example: tracely -r http://127.0.0.1:8545 -t 0x7b3cb706b2da1356daaad40860948800870b2df1201a42be9cb274b2eca61053")
 		return
 	}
-	res := service.GetTxResult("http://127.0.0.1:8545", "0x7b3cb706b2da1356daaad40860948800870b2df1201a42be9cb274b2eca61053")
+	res := service.GetTxResult(*r, *t)
 	for _, b := range res {
 		service.PrintStep(b)
 	}
