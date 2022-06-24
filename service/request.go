@@ -21,6 +21,7 @@ func GetTxResult(rpc, txid string) []model.TraceStep {
 	}
 	post, err := client.Post(rpc, "application/json", reqStream)
 	if err != nil {
+		log.Println("error", err.Error())
 		return result
 	}
 	if post.StatusCode != http.StatusOK {
