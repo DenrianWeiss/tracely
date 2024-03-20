@@ -1,9 +1,9 @@
 package model
 
 type Request struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      int    `json:"id"`
-	Method  string `json:"method"`
+	Jsonrpc string        `json:"jsonrpc"`
+	ID      int           `json:"id"`
+	Method  string        `json:"method"`
 	Params  []interface{} `json:"params"`
 }
 
@@ -18,6 +18,10 @@ func NewRequest(txId string) Request {
 	p.Params = append(p.Params, txId)
 	p.Params = append(p.Params, map[string]bool{
 		"disableStorage": true,
+		"enableMemory":   true,
+		"enableStack":    true,
+		"disableStack":   false,
+		"disableMemory":  false,
 	})
 	return p
 }

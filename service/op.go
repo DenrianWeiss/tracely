@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/DenrianWeiss/tracely/constants"
 	"github.com/DenrianWeiss/tracely/model"
 	"math/big"
 	"strconv"
@@ -80,7 +81,7 @@ func ParseReturn(step model.TraceStep) map[string]string {
 }
 
 func PrintStep(step model.TraceStep) {
-	if step.Op == "CALL" {
+	if step.Op == constants.OpEnumCall {
 		pCall := ParseCall(step)
 		fmt.Printf("%sCALL address %s, gas %s, value %s, payload %s\n",
 			GenSpace((step.Depth-1)*2),
@@ -88,29 +89,29 @@ func PrintStep(step model.TraceStep) {
 			pCall["gas"],
 			pCall["value"],
 			pCall["arg"])
-	} else if step.Op == "DELEGATECALL" || step.Op == "STATICCALL" {
+	} else if step.Op == constants.OpEnumDelegateCall || step.Op == constants.OpEnumStaticCall {
 		pCall := ParseDelegateCall(step)
 		fmt.Printf("%s%s address %s, gas %s, payload %s\n",
 			GenSpace((step.Depth-1)*2),
-			step.Op,
+			constants.OpCodeEnumToString[step.Op],
 			pCall["addr"],
 			pCall["gas"],
 			pCall["arg"])
-	} else if step.Op == "REVERT" {
+	} else if step.Op == constants.OpEnumRevert {
 		pCall := ParseRevert(step)
 		fmt.Printf("%s%s: %s\n",
 			GenSpace((step.Depth-1)*2),
-			step.Op,
+			constants.OpCodeEnumToString[step.Op],
 			pCall["reason"],
 		)
-	} else if step.Op == "RETURN" {
+	} else if step.Op == constants.OpEnumReturn {
 		pCall := ParseReturn(step)
 		fmt.Printf("%s%s: %s\n",
 			GenSpace((step.Depth-1)*2),
-			step.Op,
+			constants.OpCodeEnumToString[step.Op],
 			pCall["result"],
 		)
 	} else {
-		fmt.Printf("%s%s\n", GenSpace((step.Depth-1)*2), step.Op)
+		fmt.Printf("%s%s\n", GenSpace((step.Depth-1)*2), constants.OpCodeEnumToString[step.Op])
 	}
 }

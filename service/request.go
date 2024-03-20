@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/DenrianWeiss/tracely/constants"
 	"log"
 	"net/http"
 	"time"
@@ -32,10 +33,10 @@ func GetTxResult(rpc, txid string) []model.TraceStep {
 	for mv := range decoder.Stream() {
 		v := mv.Value.(map[string]interface{})
 		OpCode := v["op"].(string)
-		if OpCodeFocus[OpCode] {
+		if constants.OpCodeFocus[OpCode] {
 			r := model.TraceStep{}
 			r.Depth = int(v["depth"].(float64))
-			r.Op = OpCode
+			r.Op = constants.OpCodeStringToEnum[OpCode]
 			r.Gas = int(v["gas"].(float64))
 			r.Stack = v["stack"].([]interface{})
 			r.Memory = v["memory"].([]interface{})
